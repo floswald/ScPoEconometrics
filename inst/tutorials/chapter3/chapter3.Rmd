@@ -9,7 +9,7 @@ library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
+Here is my new text.
 
 ## Discrete Data
 In this tutorial we will refer to [chapter 3 of our textbook](https://floswald.github.io/ScPoEconometrics/sum.html). Please go back there if you have any questions.
