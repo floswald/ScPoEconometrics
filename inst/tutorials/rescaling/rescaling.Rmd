@@ -7,12 +7,14 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(learnr)
+
 # add rescale function here to have avail everywhere
 rescale_xy <- function(rescale_X, rescale_Y){
   dta_new <- data.frame(x = x * rescale_X,
                       y = y * rescale_Y)
   return(dta_new)
 }
+
 ```
 
 ## Tutorial: Rescaling
@@ -62,7 +64,7 @@ What we are most interested with, however, is a summary of the *relationship* be
 cor(dta)
 ```
 
-The resulting output is called a "correlation matrix". The correlation between any variable and itself is obviously 1, hence the ones on the diagonal of the matrix. What we are interested are the coefficients of the off-diagonal: $Cov(X, Y) = Cov(Y, X) =$ `r cor(x, y)[1]`. This is a fairly high correlation coefficient, which is unsurprising as the data is made up.
+The resulting output is called a "correlation matrix". The correlation between any variable and itself is obviously 1, hence the ones on the diagonal of the matrix. What we are interested in are the coefficients of the off-diagonal: $Cov(X, Y) = Cov(Y, X) =$ `r cor(x, y)[1]`. This is a fairly high correlation coefficient, which is unsurprising as the data is made up.
 
 Lastly, we can try and fit $Y$ onto $X$ to see if a regression model can retrieve the underlying model from our sample.
 
