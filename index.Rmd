@@ -37,6 +37,7 @@ if (!require("devtools")) install.packages("devtools")
 library(devtools)
 install_github(repo = "ScPoEcon/ScPoEconometrics")
 ```
+If you don't know how to access your `R` console (or even what a console is!), head to [Chapter 1](https://scpoecon.github.io/ScPoEconometrics/R-intro.html#getting-started) which will help you get started.
 
 ### Course Structure {-}
 
