@@ -32,7 +32,7 @@ This is by far the most important chapter, so we have a lot of apps. You should 
     * contrained regression: what if we have only an intercept, or only a slope? how does our result improve (with 0 intercept, say), if we then demean the data? `launchApp('reg_constrained')`
     * what happens if we rescale either x or y or both by some number? say, what if instead of measuring wage in a regression in euros, we now measure it in 1000s of euros? 
         1. `runTutorial('rescaling')`
-        1. `launchApp('rescale')`
+        1. `launchApp('Rescale')`
 * go back to 3.1.3 in the book and define the simple formulae for both coefficients
 * 3.1.4
     - `launchApp('anscombe')`
