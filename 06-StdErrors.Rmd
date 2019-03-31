@@ -558,8 +558,12 @@ This shows that lotsize and the number of bathrooms is indeed positively related
 ```{block type='note'}
 **Direction of Omitted Variable Bias**
 
-If there is an omitted variable $z$ that is *positively* correlated with our explanatory variable $x$, then our estimate of effect of $x$ on $y$ will be too large (or, *biased upwards*). The correlation between $x$ and $z$ means that we attribute part of the impact of $z$ on $y$ mistakenly to $x$! And, of course, vice versa for *negatively* correlated omitted variables.
+The direction of the bias on $b1$ due to omitting $z$ depends on two covariances: $Cov(x, z)$ and $Cov(z, y)$
+
+- if $Cov(x,z) > 0$ **and** $Cov(z,y) > 0$ then the omitted variable bias will be positive, $b_1 > \beta_1$
+- if one of $Cov(x,z)$ and $Cov(z,y)$ is positive and the other negative (it doesn't matter which), then the bias will be negative
+if $Cov(x,z) < 0$ **and** $Cov(z,y) < 0$ then the omitted variable bias will be positive, $b_1 > \beta_1$
+
+The correlation between $x$ and $z$ means that we attribute part of the impact of $z$ on $y$ mistakenly to $x$!
 ```
 <br>
-
-
