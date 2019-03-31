@@ -130,63 +130,85 @@ ctval = qt(0.95,df=n)
 cxbar = ctval * (s/sqrt(n)) + mu
 ```
 
-Imagine we were tasked by the Director of our school to provide him with our best guess of the *mean body height* $\mu$ amongst all SciencesPo students in order to assess which height the new desks should have. Of course, we are econometricians and don't *guess* things: we **estimate** them! How would we go about this task and estimate $\mu$?
+Imagine we were tasked by the director of our school to provide him with our best guess of the *mean body height* $\mu$ amongst all SciencesPo students in order to assess which height the new desks should have.
+Of course, we are econometricians and don't *guess* things: we **estimate** them!
+How would we go about this task and estimate $\mu$?
 
-You may want to ask: Why bother with this estimation business at all, and not just measure all students' height, compute $\mu$, and that's it? That's a good question! In most cases, we cannot do this, either because we do not have access to the entire population (think of computing the mean height of all Europeans!), or it's too costly to measure everyone, or it's impractical. That's why we take *samples* from the wider population, to make inference. In our example, suppose we'd randomly measure students coming out of the SciencesPo building at 27 Rue Saint Guillaume until we have $`r n`$ measurements on any given Monday. Suppose further that we found a sample mean height $\bar{x} = `r xbar`$, and that the sample standard deviation was $s=`r s`$. In short, we found the data summarized in figure \@ref(fig:heightdata)
+You may want to ask: Why bother with this estimation business at all, and not just measure all students' height, compute $\mu$, and that's it?
+That's a good question!
+In most cases, we cannot do this, either because we do not have access to the entire population (think of computing the mean height of all Europeans!), or it's too costly to measure everyone, or it's impractical.
+That's why we take *samples* from the wider population, to make inference.
+In our example, suppose we randomly measure students coming out of the SciencesPo building at 27 rue Saint-Guillaume until we have $`r n`$ measurements on any given Monday.
+Suppose further that we found a sample mean height $\bar{x} = `r xbar`$, and that the sample standard deviation was $s=`r s`$. In short, we found the data summarized in figure \@ref(fig:heightdata)
 
-```{r heightdata,echo=FALSE,fig.cap="Our ficitious sample of SciencesPo students' body height. The small ticks indicate the location of each measurement.",fig.align='center'}
+```{r heightdata,echo=FALSE,fig.cap="Our fictitious sample of SciencesPo students' body height. The small ticks indicate the location of each measurement.",fig.align='center'}
 hist(height)
 rug(height)
 ```
 
-What are we going to tell *Monsieur le Directeur* now, with those two numbers and figure \@ref(fig:heightdata) in hand? Before we address this issue, we need to make a short detour into *test statistics*.
+What are we going to tell *Monsieur le Directeur* now, with those two numbers and figure \@ref(fig:heightdata) in hand?
+Before we address this issue, we need to make a short detour into *test statistics*.
 
 
 
-### Test Statistics
+### Test statistics
 
-We have encountered many statistics already: think of the sample mean, or the standard deviation. Statistics are just functions of data. *Test* statistics are used to perform statistical tests.
+We have encountered many statistics already: think of the sample mean, or the standard deviation.
+Statistics are just functions of data.
+*Test* statistics are used to perform statistical tests.
 
-Many test statistics rely on some notion of *standardizing* the sample data so that it becomes comparable to a theoretical distribution. We encountered this idea already in section \@ref(reg-standard), where we talked about a standardized regression. The most common standardization is the so-called *z-score*, which says that
-
-\begin{equation}
-\frac{x - \mu}{\sigma}\equiv z\sim \mathcal{N}(0,1), (\#eq:zscore)
-\end{equation}
-
-in other words, substracting the population mean from random variable $x$ and dividing by it's population standard deviation yields a standard normally distributed random variable, commonly called $z$.
-
-A very similar idea applies if we *don't know* the population  variance (which is our case here!). The corresponding standardization gives rise to the *t-statistic*, and it looks very similar to \@ref(eq:zscore):
+Many test statistics rely on some notion of *standardizing* the sample data so that it becomes comparable to a standard distribution.
+We encountered this idea already in section \@ref(reg-standard), where we talked about a standardized regression.
+The most common standardization is the so-called *z-score*:
+*If some random variable $X$ is normally distributed with mean, $\mu$, and standard deviation, $\sigma$. I.e. $X \sim \mathscr{N}(\mu, \sigma^2)$, then*
 
 \begin{equation}
-\sqrt{n} \frac{\bar{x} - \mu}{s} \equiv T \sim t_{n-1} (\#eq:tscore)
+\sqrt{N} \frac{\bar{X} - \mu}{\sigma}\equiv Z \sim \mathcal{N}(0,1), (\#eq:zscore)
 \end{equation}
 
+in other words, the sample mean of $N$ random draws from a normal distribution, is itself normally distributed about the population mean, $\mu$, with standard deviation $\sigma^2 / \sqrt{N}$ .
+This is a consequence of the [central limit theorem](https://en.wikipedia.org/wiki/Central_limit_theorem).
+
+A very similar idea applies if we *don't know* the population  variance (which is our case here!).
+The corresponding standardization gives rise to the *t-statistic*, and it looks very similar to \@ref(eq:zscore):
+
+\begin{equation}
+\sqrt{N} \frac{\bar{x} - \mu}{s} \equiv T \sim t_{n-1} (\#eq:tscore)
+\end{equation}
 Several things to note:
 
 * We observe the same standardization as above: dividing by the sample standard deviation $s$ brings $\bar{x} - \mu$ to a *unit free* scale.
-* We use $\bar{x}$ and $s$ instead of $x$ and $\sigma$
-* We multiply by $\sqrt{n}$ because we expect $\bar{x} - \mu$ to be a small number: we need to *rescale* it again to make it compatible with the $t_{n-1}$ distribution.
-* $t_{n-1}$ is the [Student's T](https://en.wikipedia.org/wiki/Student's_t-distribution) distribution with $n-1$ degrees of freedom. We don't have $n$ degrees of freedom because we already had to estimate one statistic ($\bar{x}$) in order to construct $T$. 
+* We use $s$ instead of $\sigma$, an estimate of the *population parameter*
+<!-- * We multiply by $\sqrt{N}$ because we expect $\bar{x} - \mu$ to be a small number: we need to *rescale* it again to make it compatible with the $t_{n-1}$ distribution. -->
+* $t_{N-1}$ is the [Student's t](https://en.wikipedia.org/wiki/Student's_t-distribution) distribution with $n-1$ degrees of freedom.
+* We don't have $N$ degrees of freedom because we already had to estimate one statistic ($\bar{x}$) in order to construct $t$.
 
 
 
 ### Confidence Intervals {#CI}
 
-Back to our example now! We are clearly in need of some measure of *confidence* about our sample statistic $\bar{x} = `r xbar`$ before we communicate our result. It seems reasonable to inform the Director about $\bar{x}$, but surely we also need to tell him that there was considerable *dispersion* in the data: Some people were as short as `r round(min(height),2)`cm, while others were as tall as `r round(max(height),2)`cm! 
+Back to our example now!
+We are clearly in need of some measure of *confidence* about our sample statistic $\bar{x} = `r xbar`$ before we communicate our result.
+It seems reasonable to inform the director about $\bar{x}$, but surely we also need to tell him that there was considerable *dispersion* in the data: Some people were as short as `r round(min(height),2)`cm, while others were as tall as `r round(max(height),2)`cm!
 
-The way to proceed is to construct a *confidence interval* about the true population mean $\mu$, based on $\bar{x}$, which will take this uncertainty into account. We will use the *t* statistic from above. We want to have a *symmetric interval* around $\bar{x}$ which contains the true value $\mu$ with probability $1-\alpha$. One very popular choice of $\alpha$ is $0.05$, hence we cover $\mu$ with 95% probability. After computing our statistic $T$ as defind in \@ref(eq:tscore), this interval is defined as follows:
+The way to proceed is to construct a *confidence interval* for the true population mean $\mu$, based on $\bar{x}$, which will take this uncertainty into account.
+We will use the *t* statistic from above.
+We want to have a *symmetric interval* around $\bar{x}$ which contains the true value $\mu$ with probability $1-\alpha$.
+A popular choice of $\alpha$ is $0.05$, hence we cover $\mu$ with 95% probability, conditional on our assumptions about the *true* distribution being true, and given the sample data.
+After computing our statistic $T$ as defind in \@ref(eq:tscore), this interval is defined as follows:
 
 \begin{align}
 \Pr \left(-c \leq T \leq c \right) = 1-\alpha (\#eq:ci)
 \end{align}
 
-where $c$ stands for *critical value*, which we need to choose. This is illustrated in figure \@ref(fig:cifig).
+where $c$ stands for *critical value*, which are straightforward to calculate (or look up) given $\alpha$.
+This is illustrated in figure \@ref(fig:cifig).
 
 ```{r cifig, echo=FALSE, engine='tikz', out.width='90%', fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'png', fig.cap='Confidence Interval Construction. The blue area is called *coverage region* which contains the true $\\mu$ with probability $1-\\alpha$.',fig.align='center',engine.opts = list(convert = 'convert', convert.opts = '-density 600')}
 \begin{tikzpicture}[scale=2, y=5cm]
 \draw[domain=-3.15:-2] (-3.15,0) plot[id=gauss1,samples=50]
-(\x,{1/sqrt(2*pi)*exp(-0.5*(\x)^2)}) -- (-2,0);   
-\draw[domain=-2:2,fill=blue,opacity=0.4] (-2,0) -- plot[id=gauss1, samples=100] (\x,{1/sqrt(2*pi)*exp(-0.5*(\x)^2)}) -- (2,0);   
+(\x,{1/sqrt(2*pi)*exp(-0.5*(\x)^2)}) -- (-2,0);
+\draw[domain=-2:2,fill=blue,opacity=0.4] (-2,0) -- plot[id=gauss1, samples=100] (\x,{1/sqrt(2*pi)*exp(-0.5*(\x)^2)}) -- (2,0);
 \draw[domain=2:3.2] (2,0) --
 plot[id=gauss3, samples=50] (\x,{1/sqrt(2*pi)*exp(-0.5*(\x)^2)});
 \draw (2,-0.01) -- (2,0.01);    % ticks
@@ -235,24 +257,31 @@ Here $\mathcal{T}_{df}^{-1}$ stands for the *quantile function*, i.e. the invers
 \begin{align}
 0.95 = 1-\alpha &= \Pr \left(-c \leq T \leq c \right) \\(\#eq:ci2)
                 &= \Pr \left(-`r round(qt(0.975,df=n-1),3)` \leq \sqrt{n} \frac{\bar{x} - \mu}{s} \leq `r round(qt(0.975,df=n-1),3)` \right) \\
-                 &= \Pr \left(\bar{x} -`r round(qt(0.975,df=n-1),3)` \frac{s}{\sqrt{n}} \leq \mu \leq \bar{x} + `r round(qt(0.975,df=n-1),3)` \frac{s}{\sqrt{n}} \right) 
+                 &= \Pr \left(\bar{x} -`r round(qt(0.975,df=n-1),3)` \frac{s}{\sqrt{n}} \leq \mu \leq \bar{x} + `r round(qt(0.975,df=n-1),3)` \frac{s}{\sqrt{n}} \right)
 \end{align}
 
-Finally, filling in our numbers for $s$ etc, this implies that a 95% confidence interval about the location of the true average height of all SciencesPo students, $\mu$, is given by:
+Finally, filling in our numbers for $s$ etc, this implies that a 95% confidence interval for the true average height of all SciencesPo students, $\mu$, is given by:
 
 \begin{equation}
 CI = \left[`r round(xbar - qt(0.975,df=n-1)* s/sqrt(n),3)` , `r round(xbar + qt(0.975,df=n-1)* s/sqrt(n),3)` \right]
 \end{equation}
 
-We would tell the director that with 95% probability, the true average height of all students comes to lie within those two bounds.
+We would tell the director that with 95% probability, the true average height of all students lies within those two bounds.
 
-Finally, looking back at figure \@ref(fig:confint) above, the shaded area is just the 95% confidence interval *about the true value $\beta_1$*. We would say that *the true regression line* is contained within the shaded region with 95% probability. Very similarly to our example of $\bar{x}$, in that picture we have instead an estimate $b_1$, with an associated standard error $SE(b_1)$. The shaded area is called *confidence band*, and it is just plotting the confidence interval *for each value $x$* in the data. You can see how the band becomes narrower (i.e. the estimate becomes more precise) if there is more data associated to a certain $x$.
+Finally, looking back at figure \@ref(fig:confint) above, the shaded area is just the 95% confidence interval *about the true value $\beta_1$*.
+We would say that *the true regression line* is contained within the shaded region with 95% probability.
+Very similar to our example of $\bar{x}$, in that picture we have instead an estimate $b_1$, with an associated standard error $SE(b_1)$.
+The shaded area is called *confidence band*, and it is just plotting the confidence interval *for each value $x$* in the data.
+You can see how the band becomes narrower (i.e. the estimate becomes more precise) if there is more data associated to a certain value of $x$.
 
 
 ## Hypothesis Testing
 
-Now know by now how the standard errors of an OLS estimate are computed, and what they stand for. We can now briefly^[We will not go into great detail here. Please refer back to your statistics course from last spring semester (chapters 8 and 9), or the short note I [wrote while ago](images/hypothesis.pdf) ] discuss a very common usage of this information, in relation to which variables we should include in our regression. There is a statistical proceedure called *hypothesis testing* which helps us to make such decisions.
-In [hypothesis testing](https://en.wikipedia.org/wiki/Statistical_hypothesis_testing), we have a baseline, or *null* hypothesis $H_0$, which we want to confront with a competing *alternative* hypthesis $H_1$. Continuing with our example of the mean height of SciencesPo students ($\mu$), one potential hypothesis could be
+We have seen how the standard errors of an OLS estimate are computed, and what they stand for.
+We can now briefly^[We will not go into great detail here. Please refer back to your statistics course from last spring semester (chapters 8 and 9), or the short note I [wrote while ago](images/hypothesis.pdf) ] discuss a very common usage of this information, in relation to which variables we should include in our regression.
+There is a statistical procedure called *hypothesis testing* which helps us to make such decisions.
+In [hypothesis testing](https://en.wikipedia.org/wiki/Statistical_hypothesis_testing), we have a baseline, or *null* hypothesis $H_0$, which we want to confront with a competing *alternative* hypthesis $H_1$.
+Continuing with our example of the mean height of SciencesPo students ($\mu$), one potential hypothesis could be
 
 \begin{align}
 H_0:& \mu = `r mu`\\
@@ -266,18 +295,22 @@ H_0:& \mu = `r mu`\\
 H_1:& \mu > `r mu`.
 \end{align}
 
-which would mean: under the null hypothesis, the average of all ScPo students' body height is `r mu`cm. Under the alternative, it is larger. You can immediately see that this is very similar to confidence interval construction. 
+which would mean: under the null hypothesis, the average of all ScPo students' body height is `r mu`cm. Under the alternative, it is larger.
+You can immediately see that this is very similar to confidence interval construction.
 
-Suppose as above that we found $\bar{x} = `r  xbar`$, and that the sample standard deviation is still $s=`r s`$. Would you regard this as strong or weak evidence against $H_0$ and in favor of $H_1$?
+Suppose as above that we found $\bar{x} = `r  xbar`$, and that the sample standard deviation is still $s=`r s`$.
+Would you regard this as strong or weak evidence against $H_0$ and in favor of $H_1$?
 
-You should now remember what you saw when you did `launchApp("estimate")`. Look again at this app and set the slider to a sample size of $`r n`$, just as in our running example. You can see that the app draws one hundred (100) samples for you, locates their sample mean on the x-axis, and estimates the red density. 
+You should now remember what you saw when you did `launchApp("estimate")`.
+Look again at this app and set the slider to a sample size of $`r n`$, just as in our running example.
+You can see that the app draws one hundred (100) samples for you, locates their sample mean on the x-axis, and estimates the red density.
 
 ```{block type='note'}
 The crucial thing to note here is that, given we are working with a **random sample** from a population with a certain distribution of *height*, our sample statistic $\bar{x}$ is **also a random variable**. Every new set of randomly drawn students would yield a different $\bar{x}$, and all of them together would follow the red density in the app. In reality we often only get to draw one single sample, and we can use knowledge about the sampling distribution to make inference.
 ```
 <br>
 
-Our task is now to decide if given that particular sampling distribution, given our estimate $\bar{x}$ and given an observed sample variance $s^2$, whether  $\bar{x} = `r xbar`$ is *far away* from  $\bar{x} = `r mu`$, or not. The way to proceed is by computing a *test statistic*, which is to be compared to a *critical value*: if the test statistic exceeds that value, we reject $H_0$, otherwise we cannot. The critical value depends on the sampling distribution, and the size of the test. We talk about this next. 
+Our task is now to decide if given that particular sampling distribution, given our estimate $\bar{x}$ and given an observed sample variance $s^2$, whether  $\bar{x} = `r xbar`$ is *far away* from  $\bar{x} = `r mu`$, or not. The way to proceed is by computing a *test statistic*, which is to be compared to a *critical value*: if the test statistic exceeds that value, we reject $H_0$, otherwise we cannot. The critical value depends on the sampling distribution, and the size of the test. We talk about this next.
 
 ### Making Errors
 
